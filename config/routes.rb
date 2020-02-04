@@ -74,9 +74,18 @@ Rails.application.routes.draw do
       get :candidate_specification, to: 'hiring_staff/vacancies/candidate_specification#new'
       post :candidate_specification, to: 'hiring_staff/vacancies/candidate_specification#create'
       get :documents,
-        to: 'hiring_staff/vacancies/documents#index',
+        to: 'hiring_staff/vacancies/documents#new',
         constraints: lambda {
-          |request| ENV['FEATURE_UPLOAD_DOCUMENTS'] == true
+          # Casting to a string as dotenv does not reliably cast this as a boolean on import. However, using an
+          # environment variable set in the normal way does cast it as a boolean. This ensures it works either way.
+          |_request| ENV['FEATURE_UPLOAD_DOCUMENTS'].to_s == 'true'
+        }
+      post :documents,
+        to: 'hiring_staff/vacancies/documents#create',
+        constraints: lambda {
+          # Casting to a string as dotenv does not reliably cast this as a boolean on import. However, using an
+          # environment variable set in the normal way does cast it as a boolean. This ensures it works either way.
+          |_request| ENV['FEATURE_UPLOAD_DOCUMENTS'].to_s == 'true'
         }
       get :job_specification, to: 'hiring_staff/vacancies/job_specification#new'
       post :job_specification, to: 'hiring_staff/vacancies/job_specification#create'

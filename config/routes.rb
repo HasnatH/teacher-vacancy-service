@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     resource :confirmation, only: [:show]
   end
 
+  resource :spike_file, only: %i[new]
+
   namespace :api do
     scope 'v:api_version', api_version: /[1]/ do
       resources :jobs, only: %i[index show], controller: 'vacancies'

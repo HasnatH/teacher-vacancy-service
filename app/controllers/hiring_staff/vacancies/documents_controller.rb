@@ -1,5 +1,5 @@
-class HiringStaff::Vacancies::DocumentsController < HiringStaff::Vacancies::ApplicationController
+class HiringStaff::Vacancies::DocumentsController < ApplicationController
   def index
-    # WIP
+    binding.pry
   end
 end

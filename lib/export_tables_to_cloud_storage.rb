@@ -36,6 +36,7 @@ class ExportTablesToCloudStorage
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def export_csv_files
     Dir.mkdir(Rails.root.join('tmp/csv_export')) unless File.exist?(Rails.root.join('tmp/csv_export'))
 
@@ -49,12 +50,19 @@ class ExportTablesToCloudStorage
         csv << records.first.attributes.keys
         records.find_in_batches batch_size: BATCH_SIZE do |batch|
           batch.each do |row|
-            csv << row.attributes.values
+            row_values = row.attributes.values
+            row_values.each do |value|
+              if value.respond_to?(:strftime)
+                value.strftime('%FT%T')
+              end
+            end
+            csv << row_values
           end
         end
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def upload_to_google_cloud_storage
     Dir.children('tmp/csv_export').each do |csv_file|

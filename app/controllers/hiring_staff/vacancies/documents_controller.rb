@@ -1,4 +1,5 @@
 class HiringStaff::Vacancies::DocumentsController < HiringStaff::Vacancies::ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :school, :redirect_unless_vacancy_session_id, only: %i[new create]
 
   def new
